@@ -17,10 +17,16 @@ Todo se procesa en el navegador con [PDF.js](https://mozilla.github.io/pdf.js/):
 
 Abrí `index.html` en el navegador (o publicalo con GitHub Pages) y subí o arrastrá uno o más resúmenes en PDF.
 
-## Archivos
+## Estructura
 
-- `index.html`: la app completa
-- `parser.js`: el lector de resúmenes, también usable desde Node (`parseStatement(pages)`)
+```
+index.html        Estructura de la página
+css/styles.css    Estilos (tema claro y oscuro)
+js/parser.js      Lector de resúmenes BBVA a partir del texto del PDF
+js/app.js         Interfaz: carga de archivos, filtros, gráficos y tabla
+```
+
+`js/parser.js` también se puede usar desde Node: `const { parseStatement } = require('./js/parser.js')`.
 
 Los PDF y archivos `.json` están en `.gitignore` para no subir datos personales.
 
