@@ -1,7 +1,7 @@
 {
-  "name": "Mis Tarjetas BBVA",
-  "short_name": "Mis Tarjetas",
-  "description": "Tablero de tus resúmenes de tarjeta BBVA. Los PDF se leen en el teléfono y no se envían a ningún lado.",
+  "name": "TuResumen",
+  "short_name": "TuResumen",
+  "description": "Tablero de tus resúmenes de tarjetas y bancos. Los PDF se leen en el teléfono y no se envían a ningún lado.",
   "lang": "es-AR",
   "id": "./",
   "start_url": "./",

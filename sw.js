@@ -1,17 +1,18 @@
 // © 2026 Jesus Alfredo Garcia Luquez. Todos los derechos reservados.
-// Service worker: funciona sin conexión y recibe PDF compartidos desde otras apps (Android).
+// TuResumen · service worker: funciona sin conexión y recibe PDF compartidos desde otras apps (Android).
 'use strict';
 
-const VERSION = 'v1';
-const APP_CACHE = `mis-tarjetas-${VERSION}`;
-const FONT_CACHE = 'mis-tarjetas-fuentes';
-const SHARE_CACHE = 'mis-tarjetas-compartidos';
+const VERSION = 'v2';
+const APP_CACHE = `turesumen-${VERSION}`;
+const FONT_CACHE = 'turesumen-fuentes';
+const SHARE_CACHE = 'turesumen-compartidos';
 
 const APP_SHELL = [
   './',
   './index.html',
   './css/styles.css',
-  './js/parser.js',
+  './js/lectores/comun.js',
+  './js/lectores/bbva.js',
   './js/app.js',
   './js/vendor/pdf.min.js',
   './js/vendor/pdf.worker.min.js',
@@ -30,7 +31,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(keys
-        .filter((k) => k.startsWith('mis-tarjetas-v') && k !== APP_CACHE)
+        .filter((k) => k.startsWith('mis-tarjetas-') || (/^turesumen-v\d+$/.test(k) && k !== APP_CACHE))
         .map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );

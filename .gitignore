@@ -1,2 +1,8 @@
+# Datos personales: nunca subir resúmenes ni exportaciones
 *.pdf
 *.json
+!package.json
+!package-lock.json
+muestras/
+
+node_modules

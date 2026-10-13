@@ -1,0 +1,15 @@
+{
+  "name": "turesumen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TuResumen: tablero para resúmenes de tarjetas y bancos en PDF",
+  "author": "Jesus Alfredo Garcia Luquez",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "node tests/leer-muestras.js",
+    "start": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "pdfjs-dist": "3.11.174"
+  }
+}
