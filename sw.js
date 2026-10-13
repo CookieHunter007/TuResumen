@@ -2,7 +2,7 @@
 // TuResumen · service worker: funciona sin conexión y recibe PDF compartidos desde otras apps (Android).
 'use strict';
 
-const VERSION = 'v2';
+const VERSION = 'v3';
 const APP_CACHE = `turesumen-${VERSION}`;
 const FONT_CACHE = 'turesumen-fuentes';
 const SHARE_CACHE = 'turesumen-compartidos';

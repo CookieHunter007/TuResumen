@@ -15,6 +15,8 @@
   --bg:#0b1120; --surface:#131c2e; --ink:#e7ecf6; --muted:#97a3bb; --line:#24314a; --soft:#18233a;
   --accent:#7aa2ff; --c1:#7aa2ff; --c2:#f0a04b; --c3:#b48cf2; --c4:#f0789f; --c5:#a6cc4f; --c6:#a3b1c9; --usd:#3fc7b4; --good:#4ccb7c; --warn:#f08a5d; color-scheme:dark }
 *{box-sizing:border-box}
+/* El atributo hidden siempre oculta, aunque la clase defina display */
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:24px 56px;display:flex;flex-direction:column;gap:20px}
 h1,h2{font-family:var(--f-display);margin:0;text-wrap:balance}
