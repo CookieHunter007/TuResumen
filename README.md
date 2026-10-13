@@ -23,3 +23,7 @@ Abrí `index.html` en el navegador (o publicalo con GitHub Pages) y subí o arra
 - `parser.js`: el lector de resúmenes, también usable desde Node (`parseStatement(pages)`)
 
 Los PDF y archivos `.json` están en `.gitignore` para no subir datos personales.
+
+## Licencia
+
+© 2026 Jesus Alfredo Garcia Luquez. Todos los derechos reservados. Ver [LICENSE](LICENSE).

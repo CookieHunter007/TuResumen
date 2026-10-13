@@ -1,3 +1,4 @@
+// © 2026 Jesus Alfredo Garcia Luquez. Todos los derechos reservados.
 // BBVA Argentina credit-card statement parser. Input: pages = [[{x,y,s}]] (PDF text items, y grows upward).
 const MESES = {ENE:1,FEB:2,MAR:3,ABR:4,MAY:5,JUN:6,JUL:7,AGO:8,SEP:9,SET:9,OCT:10,NOV:11,DIC:12};
 const MONEY = /^-?\$?\s?[\d.]+,\d{2}-?$/;
