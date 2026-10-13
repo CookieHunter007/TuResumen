@@ -6,6 +6,16 @@
 <meta name="copyright" content="© 2026 Jesus Alfredo Garcia Luquez. Todos los derechos reservados.">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mis Tarjetas BBVA</title>
+<meta name="description" content="Tablero de tus resúmenes de tarjeta BBVA. Los PDF se leen en tu dispositivo y no se envían a ningún lado.">
+<meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1120" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mis Tarjetas">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="css/styles.css">
@@ -16,10 +26,19 @@
     <div>
       <div class="eyebrow">Resúmenes de tarjeta · BBVA Argentina</div>
       <h1>Mis Tarjetas BBVA</h1>
-      <p>Subí los PDF de tus resúmenes de Visa y Mastercard. Se leen en tu navegador y no se envían a ningún lado.</p>
+      <p>Subí los PDF de tus resúmenes de Visa y Mastercard. Se leen en tu dispositivo y no se envían a ningún lado.</p>
     </div>
     <div class="filters" id="filters"></div>
   </header>
+
+  <section class="install" id="install" hidden>
+    <img src="icons/icon-192.png" alt="" width="40" height="40">
+    <p id="install-text">Instalá Mis Tarjetas en tu teléfono para abrirla como una app, también sin conexión.</p>
+    <div class="install-actions">
+      <button class="btn primary small" id="install-btn" type="button">Instalar</button>
+      <button class="btn small" id="install-close" type="button">Ahora no</button>
+    </div>
+  </section>
 
   <section class="drop" id="drop">
     <div class="chips" id="chips"></div>
@@ -35,7 +54,7 @@
   <footer class="site-footer">© 2026 Jesus Alfredo Garcia Luquez. Todos los derechos reservados.</footer>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="js/vendor/pdf.min.js" defer></script>
 <script src="js/parser.js" defer></script>
 <script src="js/app.js" defer></script>
 </body>

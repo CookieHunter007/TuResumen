@@ -1,0 +1,27 @@
+{
+  "name": "Mis Tarjetas BBVA",
+  "short_name": "Mis Tarjetas",
+  "description": "Tablero de tus resúmenes de tarjeta BBVA. Los PDF se leen en el teléfono y no se envían a ningún lado.",
+  "lang": "es-AR",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f5f9",
+  "theme_color": "#101a30",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "./compartir",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [{ "name": "resumenes", "accept": ["application/pdf", ".pdf"] }]
+    }
+  }
+}

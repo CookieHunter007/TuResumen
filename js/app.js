@@ -26,6 +26,8 @@ function catOf(m){ if(catOverride[m.key]) return catOverride[m.key]; const s=(m.
 const fARS=new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fARS0=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
 const money=(v,dec=true)=>(v<0?'−':'')+'$ '+(dec?fARS:fARS0).format(Math.abs(v));
+const fCompact=new Intl.NumberFormat('es-AR',{notation:'compact',maximumFractionDigits:1});
+const moneyShort=v=>fCompact.format(v).replace(/\s/g,'');
 const usd=v=>(v<0?'−':'')+'U$S '+fARS.format(Math.abs(v));
 const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const fdate=s=>{if(!s)return '—';const [y,m,d]=s.split('-');return `${+d} ${MES[m-1]} ${y.slice(2)}`};
@@ -61,8 +63,8 @@ function renderFilters(){
       <button type="button" data-card="all" aria-pressed="${ui.card==='all'}">Todas</button>
       ${brands.map(b=>`<button type="button" data-card="${b}" aria-pressed="${ui.card===b}"><span class="dot dot--${brandClass(b)}"></span>${b}</button>`).join('')}
     </div>
-    <label class="filter-label" for="period">Cierre</label>
-    <select id="period">${ps.map(x=>`<option value="${x}" ${x===p?'selected':''}>${fdate(x)}</option>`).join('')}</select>` : '';
+    <span class="period"><label class="filter-label" for="period">Cierre</label>
+    <select id="period">${ps.map(x=>`<option value="${x}" ${x===p?'selected':''}>${fdate(x)}</option>`).join('')}</select></span>` : '';
 }
 
 function render(){
@@ -127,9 +129,9 @@ function render(){
       <p class="note">Las categorías se asignan por el nombre del comercio. Cambialas en la tabla de movimientos y se recuerdan para próximos resúmenes.</p>
     </section>
     <section class="panel"><header><h2>Cuotas a vencer</h2><span class="panel-sub">según el resumen</span></header>
-      ${futList.length?`<div><div class="cols">${futList.map(f=>{const t=Object.values(f.by).reduce((x,y)=>x+y,0);return `<div class="col${f.resto?' rest':''}"><span class="tot">${money(t,false)}</span><div class="stack" style="height:${(t/fMax*100).toFixed(1)}%">${brands.map(b=>f.by[b]?`<span style="flex:${f.by[b]};background:${color(b)}" title="${b}: ${money(f.by[b])}"></span>`:'').join('')}</div></div>`}).join('')}</div>
+      ${futList.length?`<div><div class="cols">${futList.map(f=>{const t=Object.values(f.by).reduce((x,y)=>x+y,0);return `<div class="col${f.resto?' rest':''}"><span class="tot" title="${money(t)}">${moneyShort(t)}</span><div class="stack" style="height:${(t/fMax*100).toFixed(1)}%">${brands.map(b=>f.by[b]?`<span style="flex:${f.by[b]};background:${color(b)}" title="${b}: ${money(f.by[b])}"></span>`:'').join('')}</div></div>`}).join('')}</div>
       <div class="collabs">${futList.map(f=>`<span>${f.resto?fmes(f.mes)+' en adelante':fmes(f.mes)}</span>`).join('')}</div></div>`:'<span class="muted">No hay cuotas pendientes.</span>'}
-      <div class="bars">${cuotasMov.map(m=>`<div class="bar"><span class="lab">${esc(niceDesc(m.desc))}</span><span class="track"><span class="seg${m.brand==='Visa'?1:2}" style="width:${(m.cuota.n/m.cuota.de*100).toFixed(1)}%"></span></span><span class="val">cuota ${m.cuota.n} de ${m.cuota.de}<small class="muted">${money(m.ars,false)} por mes</small></span></div>`).join('')}</div>
+      <div class="bars">${cuotasMov.map(m=>`<div class="bar bar--cuota"><span class="lab">${esc(niceDesc(m.desc))}</span><span class="track"><span class="seg${m.brand==='Visa'?1:2}" style="width:${(m.cuota.n/m.cuota.de*100).toFixed(1)}%"></span></span><span class="val">cuota ${m.cuota.n} de ${m.cuota.de}<small class="muted">${money(m.ars,false)} por mes</small></span></div>`).join('')}</div>
     </section>
     <section class="panel"><header><h2>Dónde más gastaste</h2><span class="panel-sub">top ${merList.length} comercios</span></header>
       <div class="bars">${merList.map(m=>barRow(m.name,m.ars,m.tot,m.usd,merMax,m.n>1?` <span class="pill">×${m.n}</span>`:'')).join('')}</div>
@@ -178,7 +180,7 @@ const drop=document.getElementById('drop');
 ['dragleave','drop'].forEach(t=>document.addEventListener(t,e=>{e.preventDefault();if(t==='drop'||!e.relatedTarget)drop.classList.remove('over')}));
 document.addEventListener('drop',e=>{ if(e.dataTransfer&&e.dataTransfer.files.length) handleFiles(e.dataTransfer.files); });
 
-if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='js/vendor/pdf.worker.min.js';
 async function readPdf(file){
   const doc=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise; const pages=[];
   for(let p=1;p<=doc.numPages;p++){ const tc=await (await doc.getPage(p)).getTextContent(); pages.push(tc.items.map(i=>({x:i.transform[4],y:i.transform[5],s:i.str}))); }
@@ -187,7 +189,7 @@ async function readPdf(file){
 async function handleFiles(fileList){
   const files=Array.from(fileList);
   const st=document.getElementById('status'); st.className='status'; st.textContent='Leyendo…';
-  if(!window.pdfjsLib){ st.className='status err'; st.textContent='No se pudo cargar el lector de PDF. Revisá tu conexión y recargá la página.'; return; }
+  if(!window.pdfjsLib){ st.className='status err'; st.textContent='No se pudo cargar el lector de PDF. Recargá la página.'; return; }
   const errs=[]; let n=0, last=null;
   for(const f of files){
     try{ const s=parseStatement(await readPdf(f));
@@ -202,3 +204,37 @@ async function handleFiles(fileList){
   render();
 }
 render();
+
+// ---------- App instalable (PWA) ----------
+const installBox=document.getElementById('install');
+const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+let installEvent=null;
+function showInstall(text,withButton){
+  if(isStandalone()||store.get(':noinstall',false)) return;
+  if(text) document.getElementById('install-text').textContent=text;
+  document.getElementById('install-btn').hidden=!withButton;
+  installBox.hidden=false;
+}
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); installEvent=e; showInstall(null,true); });
+window.addEventListener('appinstalled',()=>{ installBox.hidden=true; installEvent=null; });
+document.getElementById('install-btn').addEventListener('click',async()=>{
+  if(!installEvent) return;
+  installEvent.prompt(); await installEvent.userChoice.catch(()=>{}); installEvent=null; installBox.hidden=true;
+});
+document.getElementById('install-close').addEventListener('click',()=>{ installBox.hidden=true; store.set(':noinstall',true); });
+if(isIOS && !isStandalone()) showInstall('Para instalarla en el iPhone: tocá Compartir en Safari y después “Agregar a inicio”.',false);
+
+// PDF compartidos desde otra app (Android): el service worker los deja guardados.
+async function loadShared(){
+  if(!('caches' in window)) return;
+  const cache=await caches.open('mis-tarjetas-compartidos'); const reqs=await cache.keys(); if(!reqs.length) return;
+  const files=[];
+  for(const r of reqs){ const res=await cache.match(r); const blob=await res.blob();
+    files.push(new File([blob],decodeURIComponent(res.headers.get('X-Nombre')||'resumen.pdf'),{type:'application/pdf'})); await cache.delete(r); }
+  history.replaceState(null,'',location.pathname);
+  await handleFiles(files);
+}
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  navigator.serviceWorker.register('sw.js').then(()=>loadShared()).catch(()=>{});
+}
